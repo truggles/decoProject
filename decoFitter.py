@@ -30,7 +30,7 @@ Max = nBins * binWidth
 print "X range: 0 - %i" % Max
 
 xMin = []
-for i in range(0, 4):
+for i in range(1, 4):
     xMin.append(i * binWidth)
 xMax = []
 for i in range(4, 12):
@@ -43,6 +43,7 @@ print xMax
 storage = []
 for mini in xMin:
     for maxi in xMax:
+        print "x range: %i-%i" % (mini, maxi)
         #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
         funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', mini, maxi)
         #$  funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
@@ -56,7 +57,7 @@ for mini in xMin:
         #$  f1.SetParName( 3, "x offset" )
         #$  f1.SetParameter( 3, 3 )
           
-        hist.Fit('funx', 'EMRIW')
+        rslt = hist.Fit('funx', 'EMRISW')
         fitResult = hist.GetFunction("funx")
         fitVert = round(fitResult.GetParameter( 0 ), 0)
         fitDepth = round(fitResult.GetParameter( 1 ), 3)
@@ -66,12 +67,13 @@ for mini in xMin:
         #$  fitOffset = fitResult.GetParameter( 3 )
         #$  fitSteepError = fitResult.GetParError( 2 )
         #$  fitOffsetError = fitResult.GetParError( 3 )
-        storage.append( [mini, maxi, fitVert, fitVertError, fitDepth, fitDepthError] )
+        accurate = rslt.IsValid()
+        storage.append( [mini, maxi, fitVert, fitVertError, fitDepth, fitDepthError, accurate] )
         
 
 #print storage
 for line in storage:
-    print "x range: %3i-%3i  vert: %8i+-%8i  depth: %10f+-%10f" % (line[0], line[1], line[2], line[3], line[4], line[5])
+    print "x range: %3i-%3i  vert: %8i+-%8i  depth: %10f+-%10f   accurate: %7s" % (line[0], line[1], line[2], line[3], line[4], line[5], line[6])
 
 gROOT.cd()
 
