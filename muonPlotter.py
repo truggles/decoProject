@@ -27,9 +27,6 @@ def getPass( name, length, ecc ):
   if 'SPH' in name:
       if length < 10 and ecc > 0.9:
         hallPass = True
-  if 'RAZR  ' in name:
-      if length < 8 and ecc > 0.7:
-        hallPass = True
   return hallPass
 
 def getRecord(ifile):
@@ -63,13 +60,7 @@ for key in mapper.keys():
     nMax = 70
     lenMax = 30
     fitMin = 2
-    namer = "Samsumg Galaxy S2"
-  if 'RAZR' in key:
-    nBins = 20
-    nMax = 40 
-    lenMax = 20
-    fitMin = 3
-    namer = "RAZR"
+    namer = "Samsung Galaxy S2"
 
   for name in mapper[key]:
     #ofile = open('muons_%s.txt' % key, 'w')
@@ -141,7 +132,7 @@ for key in mapper.keys():
     #    cdfFinal.SetBinContent( bin, newVal )
     #cdfFinal.Scale( 1 / cdfFinal.GetBinContent( nMax ) )
     #cdfFinal.Draw()
-    #c5.SaveAs('CDF_%s.png' % key)
+    #c5.SaveAs('pngs/CDF_%s.png' % key)
     #c5.Close()
   
     ''' Plot all 4 option with eccentricity progression '''
@@ -167,13 +158,13 @@ for key in mapper.keys():
     #pad4.Draw()
     #pad4.Close()
     #lHist99.Draw('hist e1')  
-    #c1.SaveAs('muonsPlot_%s.png' % key)
+    #c1.SaveAs('pngs/muonsPlot_%s.png' % key)
     #c1.Close()
     c2 = ROOT.TCanvas("c2","title",600,600)
     lHist99.GetXaxis().SetTitle("Length (pixel widths)")
     lHist99.GetYaxis().SetTitle("Events / %s pixel widths" % str(nMax/nBins) )
     lHist99.Draw('hist e1')
-    c2.SaveAs('hist_%s%s.png' % (key, name))
+    c2.SaveAs('pngs/hist_%s%s.png' % (key, name))
     lHist99.SaveAs('root_%s%s.root' % (key, name))
   
     ''' Do some fitting to find the depth of the depletion region '''
@@ -194,7 +185,7 @@ for key in mapper.keys():
 #    fitResult = lHist99.GetFunction("funx")
 #    lHist99.SetAxisRange( 0, nMax )
 #    fitResult.Draw('same')
-#    c2.SaveAs('final%s%s_Fit.png' % (key, name) )
+#    c2.SaveAs('pngs/final%s%s_Fit.png' % (key, name) )
   
   #  # Plot others varied by for an eye comparison
   #  # Adjust the depth fit to show errors
@@ -223,7 +214,7 @@ for key in mapper.keys():
   #  f3.SetParameter( 3, fitOffset )
   #  f3.Draw('same')
   #  c2.Update()
-  #  c2.SaveAs('finalFit%s_depthfit.png' % key)
+  #  c2.SaveAs('pngs/finalFit%s_depthfit.png' % key)
   #
   #  # Adjust the vertical fit to show errors
   #  f2.SetParameter( 0, fitVert + fitVertError )
@@ -233,7 +224,7 @@ for key in mapper.keys():
   #  #f3.SetParameter( 0, fitVert * 0.5 )
   #  f3.SetParameter( 1, fitDepth )
   #  c2.Update()
-  #  c2.SaveAs('finalFit%s_vertFit.png' % key)
+  #  c2.SaveAs('pngs/finalFit%s_vertFit.png' % key)
   #
   #  # Adjust the steepness fit to show errors
   #  f2.SetParameter( 0, fitVert )
@@ -243,7 +234,7 @@ for key in mapper.keys():
   #  #f3.SetParameter( 2, fitSteep - fitSteepError )
   #  f3.SetParameter( 2, fitSteep * 0.5 )
   #  c2.Update()
-  #  c2.SaveAs('finalFit%s_steepFit.png' % key)
+  #  c2.SaveAs('pngs/finalFit%s_steepFit.png' % key)
   #
   #  # Adjust the offset fit to show errors
   #  f2.SetParameter( 3, fitOffset + fitOffsetError )
@@ -251,7 +242,7 @@ for key in mapper.keys():
   #  f3.SetParameter( 3, fitOffset - fitOffsetError )
   #  f3.SetParameter( 2, fitSteep )
   #  c2.Update()
-  #  c2.SaveAs('finalFit%s_offsetFit.png' % key)
+  #  c2.SaveAs('pngs/finalFit%s_offsetFit.png' % key)
   #  c2.Close()
   
     c3 = ROOT.TCanvas("c3","title",800,800)
@@ -265,7 +256,7 @@ for key in mapper.keys():
     c3.cd(4)
     AreaVsEcc2.Draw('COLZ')
     gStyle.SetOptStat( 0 )
-    c3.SaveAs('lenVsEcc_%s%s.png' % (key, name) )
+    c3.SaveAs('pngs/lenVsEcc_%s%s.png' % (key, name) )
     c3.Close()
   
     gROOT.cd()
