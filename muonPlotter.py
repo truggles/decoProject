@@ -168,24 +168,24 @@ for key in mapper.keys():
     lHist99.SaveAs('root_%s%s.root' % (key, name))
   
     ''' Do some fitting to find the depth of the depletion region '''
-#    #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
-#    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 15, 110)
-##$    funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
-#    f1 = gROOT.GetFunction('funx')
-#    f1.SetParName( 0, "vert count" )
-#    f1.SetParName( 1, "depth" )
-#    f1.SetParameter( 0, 999 )
-#    f1.SetParameter( 1, 999 )
-##$    f1.SetParName( 2, "steepness" )
-##$    f1.SetParameter( 2, -1 )
-##$    f1.SetParName( 3, "x offset" )
-##$    f1.SetParameter( 3, 3 )
-#  
-#    lHist99.Fit('funx', 'EMRI')
-#    fitResult = lHist99.GetFunction("funx")
-#    lHist99.SetAxisRange( 0, nMax )
-#    fitResult.Draw('same')
-#    c2.SaveAs('pngs/final%s%s_Fit.png' % (key, name) )
+    #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
+    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
+#$    funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
+    f1 = gROOT.GetFunction('funx')
+    f1.SetParName( 0, "vert count" )
+    f1.SetParName( 1, "depth" )
+    f1.SetParameter( 0, 999 )
+    f1.SetParameter( 1, 999 )
+#$    f1.SetParName( 2, "steepness" )
+#$    f1.SetParameter( 2, -1 )
+#$    f1.SetParName( 3, "x offset" )
+#$    f1.SetParameter( 3, 3 )
+  
+    lHist99.Fit('funx', 'EMRIW')
+    fitResult = lHist99.GetFunction("funx")
+    lHist99.SetAxisRange( 0, nMax )
+    fitResult.Draw('same')
+    c2.SaveAs('pngs/final%s%s_Fit.png' % (key, name) )
   
   #  # Plot others varied by for an eye comparison
   #  # Adjust the depth fit to show errors
