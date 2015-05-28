@@ -1,1 +1,4 @@
-*.png
+#*.png
+intensityDist.py
+muonHunter.py
+plotBlobs.py
