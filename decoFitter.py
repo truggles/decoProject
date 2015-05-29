@@ -15,9 +15,9 @@ p.add_argument("file", nargs=1,
 args = p.parse_args()
 filename = args.file[0]
 
-fitCode = 'EMRISWW'
+#fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
-#fitCode = 'EMRIS'
+fitCode = 'EMRIS'
 
 ifile = ROOT.TFile("%s" % filename, "r")
 if 'HTC' in filename:
@@ -43,7 +43,7 @@ for i in range(1, 4):
 xMax = []
 for i in range(4, 12):
     xMax.append(i * binWidth)
-xMin = [10]
+xMin = [binWidth]
 #xMax = [90, 100]
 print xMin
 print xMax
@@ -93,12 +93,12 @@ for mini in xMin:
         f2.Draw('same')
         fitResult.Draw('same')
         fitResult.SetLineColor(ROOT.kRed)
-        hist.SetMaximum( fitVert * 1.2 )
+        #hist.SetMaximum( fitVert * 1.2 )
         hist.SetTitle('%s Fit x range: %i-%i' % (titleName, mini, maxi))
         c1.SaveAs('fits/%s_%s_%i-%i.png' % (saveName, fitCode, mini, maxi) )
+        #c1.SaveAs('fits/%s_%s_tall_%i-%i.png' % (saveName, fitCode, mini, maxi) )
         c1.Close()
 
-#print storage
 ofile = open('fits/%s_%s.txt' % (saveName, fitCode), 'w')
 
 for line in storage:
