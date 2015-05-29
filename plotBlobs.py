@@ -329,36 +329,43 @@ cb.set_label(label)
 
 # Plot any identified blobs
 if args.contours != None:
-    areas = []
-    lengths = []
     # Show highlighted blobs on the main plot
     for blob in blobs:
         ax.plot(blob.x, blob.y, linewidth=2, color="#00dd00")
-        areas.append( blob.area )
-        lengths.append( blob.length() )
 
     # Zoom in on grouped blobs in separate figures
+    numGroups = len( groups )
     for i, bg in enumerate(groups):
         X0, X1, Y0, Y1 = bg.getSquareBoundingBox()
         l1, l2, theta = bg.getPrincipalMoments(image)
         eccentricity = (np.sqrt( l1**2 - l2**2 ) / l1)
         maxI = bg.getMaxIntensity(image)
-        #area = bg.getArea(image)
-        area = areas.pop(0)
-        aOverMaj = area / l2
-        len = lengths.pop(0)
 
         fig = plt.figure(figsize=(6,6))
         axg = fig.add_subplot(111)
         im = axg.imshow(image, cmap=mpl.cm.hot,
                         interpolation="nearest", aspect="auto",
                         extent=[x0, x1, y0, y1])
-        numBlobs = 0
+
+	# Get number for blobs in this grouping
+	numBlobs = 0
         for blob in bg.blobs:
-            numBlobs += 1
+	    numBlobs += 1
+
+	blobNum = 0
+        for blob in bg.blobs:
+            blobNum += 1
             axg.plot(blob.x, blob.y, linewidth=2, color="#00dd00")
-        print "%s  majA: %g  minA: %g  theta: %g  ecc: %f  area: %f  aOverMaj: %f  len: %f #blobs: %i maxI: %f" % \
-              (os.path.basename(filename), l1, l2, theta*180./np.pi, eccentricity, area, aOverMaj, len, numBlobs, maxI )
+
+	    area = blob.area
+	    len = blob.length()
+            #maxI = blob.getMaxIntensity(image)
+            aOverMaj = area / l2
+	    xCent = blob.xc
+	    yCent = blob.yc
+            print "evt: %s totBG: %i totBlobs: %i bg#: %i blob#: %i majA: %g minA: %g theta: %g ecc: %f area: %f aOverMaj: %f len: %f xCent: %i yCent: %i maxI: %f" % \
+              (str( os.path.basename(filename) )[:-4], numGroups, numBlobs, i+1, blobNum, l1, l2, theta*180./np.pi, \
+               eccentricity, area, aOverMaj, len, xCent, yCent, maxI )
         axg.set_xlim([X0-5, X1+5])
         axg.set_ylim([Y0-5, Y1+5])
         axg.set_xlabel("pixels")
