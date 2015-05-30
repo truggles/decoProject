@@ -36,7 +36,7 @@ def getRecord(ifile):
   for line in ifile:
       if 'majA' not in line: continue
       info = line.split(' ')
-      event = str( info[0] )
+      event = str( info[1] )
       if event == previous:
           count += 1
       else:
@@ -85,14 +85,12 @@ for key in mapper.keys():
     for linex in ifile:
         if 'majA' not in linex: continue
         info = linex.split(' ')
-        fst = str( info[0] )[0]
-        event = str( info[0] )
-        ecc = float( info[12] )
-        l1 = float( info[18] )
-        l2 = float( info[21] )
-        area = float( info[15] )
-        majA = float( info[3] )
-        minA = float( info[6] )
+        event = str( info[1] )
+        ecc = float( info[17] )
+        l2 = float( info[23] )
+        area = float( info[19] )
+        majA = float( info[11] )
+        minA = float( info[13] )
         #print "majA: %f minA: %f area: %f" % (majA, minA, area)
         #ofile.write('%10s %10f %10f %10f' % (info[0], ecc, l1, l2) )
         len_ = l2
