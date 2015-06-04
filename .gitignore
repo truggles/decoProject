@@ -1,3 +1,6 @@
 #*.png
 intensityDist.py
 decoFitterOut.rtf
+*.root
+fits/*
+fits*/*.png
