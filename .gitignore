@@ -4,3 +4,5 @@ decoFitterOut.rtf
 *.root
 fits/*
 fits*/*.png
+untracked_files
+forJustin/
