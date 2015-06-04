@@ -15,19 +15,27 @@ p.add_argument("file", nargs=1,
 args = p.parse_args()
 filename = args.file[0]
 
-#fitCode = 'EMRISWW'
+fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
-fitCode = 'EMRIS'
+#fitCode = 'EMRIS'
 
 ifile = ROOT.TFile("%s" % filename, "r")
+if '2010' in filename:
+    num = '2010'
+if '405' in filename:
+    num = '405'
+if '8025' in filename:
+    num = '8025'
 if 'HTC' in filename:
     histName = "HTC Wildfire Slength"
     saveName = "HTC_Wildfire_S"
     titleName = "HTC_Wildfire_S"
+    abrev = 'HTC'
 if 'SPH' in filename:
     histName = "Samsung Galaxy S2length"
     saveName = "Samsung_Galaxy_S2"
     titleName = "Samsung_Galaxy_S2"
+    abrev = 'SPH'
 hist = ifile.Get(histName)
 
 binWidth = int( hist.GetBinWidth(1) )
@@ -95,11 +103,12 @@ for mini in xMin:
         fitResult.SetLineColor(ROOT.kRed)
         #hist.SetMaximum( fitVert * 1.2 )
         hist.SetTitle('%s Fit x range: %i-%i' % (titleName, mini, maxi))
-        c1.SaveAs('fits/%s_%s_%i-%i.png' % (saveName, fitCode, mini, maxi) )
-        #c1.SaveAs('fits/%s_%s_tall_%i-%i.png' % (saveName, fitCode, mini, maxi) )
+        c1.SaveAs('fits%s%s/%s_%s_%i-%i.png' % (abrev, num, saveName, fitCode, mini, maxi) )
+        #c1.SaveAs('fits%s%s/%s_%s_tall_%i-%i.png' % (abrev, num, saveName, fitCode, mini, maxi) )
         c1.Close()
+        gROOT.cd()
 
-ofile = open('fits/%s_%s.txt' % (saveName, fitCode), 'w')
+ofile = open('fits%s%s/%s_%s.txt' % (abrev, num, saveName, fitCode), 'w')
 
 for line in storage:
     line =  "x range: %3i-%3i  vert: %8i+-%8i  depth: %10f+-%10f   accurate: %7s" % (line[0], line[1], line[2], line[3], line[4], line[5], line[6])
@@ -107,7 +116,6 @@ for line in storage:
     ofile.write("%s\n" % line)
 
 ofile.close()
-gROOT.cd()
 
 
 
