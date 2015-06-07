@@ -166,8 +166,10 @@ for key in mapper.keys():
     lHist99.SaveAs('root_%s%s.root' % (key, name))
   
     ''' Do some fitting to find the depth of the depletion region '''
+    ''' I previously forgot the dl / dTheta, that is the new 1/(1+x^2) component '''
     #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
-    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
+    #funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
+    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*(1/([1]*(1+((x*x)/([1]*[1])))))', nMax/nBins, nMax)
 #$    funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
     f1 = gROOT.GetFunction('funx')
     f1.SetParName( 0, "vert count" )
