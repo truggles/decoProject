@@ -1,8 +1,8 @@
-x range:  10- 40  vert:   296759+-  140017  depth:   0.212000+-  0.051000   accurate:   False
-x range:  10- 50  vert:       21+-       0  depth: 21171.865000+-  1.414000   accurate:    True
-x range:  10- 60  vert:   333140+-  161225  depth:  -0.199000+-  0.049000   accurate:   False
-x range:  10- 70  vert:   330052+-  124701  depth:  -0.200000+-  0.038000   accurate:   False
-x range:  10- 80  vert:   393334+-  199303  depth:   0.183000+-  0.047000   accurate:   False
-x range:  10- 90  vert:   272562+-  120709  depth:   0.220000+-  0.050000   accurate:   False
-x range:  10-100  vert:   379788+-  188890  depth:  -0.186000+-  0.047000   accurate:   False
-x range:  10-110  vert:   379788+-  188890  depth:  -0.186000+-  0.047000   accurate:   False
+x range:  10- 40  vert:     1268+-     458  depth:  -7.829000+-  0.963000   accurate:    True
+x range:  10- 50  vert:     1338+-     503  depth:   7.685000+-  0.974000   accurate:    True
+x range:  10- 60  vert:     1354+-     507  depth:  -7.656000+-  0.965000   accurate:    True
+x range:  10- 70  vert:     1358+-     514  depth:   7.648000+-  0.974000   accurate:    True
+x range:  10- 80  vert:     1350+-     508  depth:   7.664000+-  0.972000   accurate:    True
+x range:  10- 90  vert:     1350+-     510  depth:   7.662000+-  0.974000   accurate:    True
+x range:  10-100  vert:     1351+-     510  depth:   7.662000+-  0.973000   accurate:    True
+x range:  10-110  vert:     1351+-     510  depth:   7.662000+-  0.973000   accurate:    True
