@@ -18,6 +18,7 @@ filename = args.file[0]
 #fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
 #fitCode = 'EMRIS'
+isotropic = False
 
 for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
     ifile = ROOT.TFile("%s" % filename, "r")
@@ -60,12 +61,15 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
     ''' Do some fitting to find the depth of the depletion region '''
     ''' I previously forgot the dl / dTheta, that is the new 1/(1+x^2) component '''
     storage = []
+    folder = 'fits%s%s' % (abrev, num)
+    if isotropic: folder = folder + 'iso'
     for mini in xMin:
         for maxi in xMax:
             print "x range: %i-%i" % (mini, maxi)
             #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
             #funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', mini, maxi)
-            funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*( 1 / ( 1 + ((x*x)/([1]*[1]))))', mini, maxi)
+            funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*( 1 / ([1]*( 1 + ((x*x)/([1]*[1])))))', mini, maxi)
+            if isotropic: funx = ROOT.TF1( 'funx', '[0]*sin( TMath::ATan( x / [1]) )*( 1 / ([1]*( 1 + ((x*x)/([1]*[1])))))', mini, maxi)
             #$  funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
             f1 = gROOT.GetFunction('funx')
             f1.SetParName( 0, "vert count" )
@@ -93,7 +97,8 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             print "\n"
     
             ''' save histos with fit '''
-            funNew = ROOT.TF1( 'funNew', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*( 1 / ( 1 + ((x*x)/([1]*[1]))))', 0, Max)
+            funNew = ROOT.TF1( 'funNew', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*( 1 / ([1]*( 1 + ((x*x)/([1]*[1])))))', 0, Max)
+            if isotropic: funNew = ROOT.TF1( 'funNew', '[0]*sin( TMath::ATan( x / [1]) )*( 1 / ([1]*( 1 + ((x*x)/([1]*[1])))))', 0, Max)
             f2 = gROOT.GetFunction('funNew')
             f2.SetParameter( 0, fitVert )
             f2.SetParameter( 1, fitDepth )
@@ -106,12 +111,12 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             fitResult.SetLineColor(ROOT.kRed)
             #hist.SetMaximum( fitVert * 1.2 )
             hist.SetTitle('%s Fit x range: %i-%i' % (titleName, mini, maxi))
-            c1.SaveAs('fits%s%s/%s_%s_%i-%i.png' % (abrev, num, saveName, fitCode, mini, maxi) )
-            #c1.SaveAs('fits%s%s/%s_%s_tall_%i-%i.png' % (abrev, num, saveName, fitCode, mini, maxi) )
+            c1.SaveAs('%s/%s_%s_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
+            #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
             c1.Close()
             gROOT.cd()
     
-    ofile = open('fits%s%s/%s_%s.txt' % (abrev, num, saveName, fitCode), 'w')
+    ofile = open('%s/%s_%s.txt' % (folder, saveName, fitCode), 'w')
     
     for line in storage:
         line =  "x range: %3i-%3i  vert: %8i+-%8i  depth: %10f+-%10f   accurate: %7s" % (line[0], line[1], line[2], line[3], line[4], line[5], line[6])
