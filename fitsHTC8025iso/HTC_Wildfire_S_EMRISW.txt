@@ -1,0 +1,8 @@
+x range:  10- 40  vert:   194283+-  120158  depth:  -0.069000+-  0.044000   accurate:   False
+x range:  10- 50  vert:   194283+-  120158  depth:  -0.069000+-  0.044000   accurate:   False
+x range:  10- 60  vert:   194283+-  120158  depth:  -0.069000+-  0.044000   accurate:   False
+x range:  10- 70  vert:   194283+-  120158  depth:  -0.069000+-  0.044000   accurate:   False
+x range:  10- 80  vert:   176360+-  107994  depth:  -0.076000+-  0.047000   accurate:   False
+x range:  10- 90  vert:   176360+-  107994  depth:  -0.076000+-  0.047000   accurate:   False
+x range:  10-100  vert:   176360+-  107994  depth:  -0.076000+-  0.047000   accurate:   False
+x range:  10-110  vert:   176360+-  107994  depth:  -0.076000+-  0.047000   accurate:   False
