@@ -31,12 +31,12 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
     if 'HTC' in filename:
         histName = "HTC Wildfire Slength"
         saveName = "HTC_Wildfire_S"
-        titleName = "HTC_Wildfire_S"
+        titleName = "HTC Wildfire S"
         abrev = 'HTC'
     if 'SPH' in filename:
         histName = "Samsung Galaxy S2length"
         saveName = "Samsung_Galaxy_S2"
-        titleName = "Samsung_Galaxy_S2"
+        titleName = "Samsung Galaxy S2"
         abrev = 'SPH'
     hist = ifile.Get(histName)
     
@@ -110,7 +110,9 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             fitResult.Draw('same')
             fitResult.SetLineColor(ROOT.kRed)
             #hist.SetMaximum( fitVert * 1.2 )
-            hist.SetTitle('%s Fit x range: %i-%i' % (titleName, mini, maxi))
+            sufix = "Sea Level Muon Distribution"
+            if isotropic: sufix = "Isotropic Distribution"
+            hist.SetTitle('%s %s Fit' % (titleName, sufix))
             hist.GetXaxis().SetRange( 2, 11 )
             c1.SaveAs('%s/%s_%s_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
             #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
