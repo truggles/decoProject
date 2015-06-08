@@ -1,8 +1,8 @@
-x range:  10- 40  vert:     4878+-      43  depth:  -9.350000+-  0.252000   accurate:    True
-x range:  10- 50  vert:     4896+-      46  depth:  -9.070000+-  0.238000   accurate:    True
-x range:  10- 60  vert:     4921+-      50  depth:   8.781000+-  0.233000   accurate:    True
-x range:  10- 70  vert:     4938+-      52  depth:   8.621000+-  0.231000   accurate:    True
-x range:  10- 80  vert:     4962+-      55  depth:   8.428000+-  0.231000   accurate:    True
-x range:  10- 90  vert:     4962+-      55  depth:   8.428000+-  0.231000   accurate:    True
-x range:  10-100  vert:     4968+-      56  depth:   8.379000+-  0.231000   accurate:    True
-x range:  10-110  vert:     4968+-      56  depth:   8.379000+-  0.231000   accurate:    True
+x range:  10- 40  vert:     4878+-      43  depth:  -9.350000+-  0.252000   ChiSq: 854.379871   accurate:    True
+x range:  10- 50  vert:     4896+-      46  depth:  -9.070000+-  0.238000   ChiSq: 66.060653   accurate:    True
+x range:  10- 60  vert:     4921+-      50  depth:   8.781000+-  0.233000   ChiSq: 61.616550   accurate:    True
+x range:  10- 70  vert:     4938+-      52  depth:   8.621000+-  0.231000   ChiSq: 59.335763   accurate:    True
+x range:  10- 80  vert:     4962+-      55  depth:   8.428000+-  0.231000   ChiSq: 56.754758   accurate:    True
+x range:  10- 90  vert:     4962+-      55  depth:   8.428000+-  0.231000   ChiSq: 56.754758   accurate:    True
+x range:  10-100  vert:     4968+-      56  depth:   8.379000+-  0.231000   ChiSq: 56.108054   accurate:    True
+x range:  10-110  vert:     4974+-      57  depth:   8.336000+-  0.231000   ChiSq: 55.564398   accurate:    True
