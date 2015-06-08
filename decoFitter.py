@@ -19,6 +19,7 @@ filename = args.file[0]
 #fitCode = 'EMRISW'
 #fitCode = 'EMRIS'
 isotropic = False
+#isotropic = True
 
 for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
     ifile = ROOT.TFile("%s" % filename, "r")
@@ -92,9 +93,6 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             #$  fitSteepError = fitResult.GetParError( 2 )
             #$  fitOffsetError = fitResult.GetParError( 3 )
             accurate = rslt.IsValid()
-            ''' store results for a nice print out summary '''
-            storage.append( [mini, maxi, fitVert, fitVertError, fitDepth, fitDepthError, accurate] )
-            print "\n"
     
             ''' save histos with fit '''
             funNew = ROOT.TF1( 'funNew', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*( 1 / ([1]*( 1 + ((x*x)/([1]*[1])))))', 0, Max)
@@ -109,6 +107,9 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             f2.Draw('same')
             fitResult.Draw('same')
             fitResult.SetLineColor(ROOT.kRed)
+
+            chiSq = hist.Chisquare( funNew )
+
             #hist.SetMaximum( fitVert * 1.2 )
             sufix = "Sea Level Muon Distribution"
             if isotropic: sufix = "Isotropic Distribution"
@@ -116,13 +117,16 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             hist.GetXaxis().SetRange( 2, 11 )
             c1.SaveAs('%s/%s_%s_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
             #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
+            ''' store results for a nice print out summary '''
+            storage.append( [mini, maxi, fitVert, fitVertError, fitDepth, fitDepthError, chiSq, accurate] )
+            print "\n"
             c1.Close()
             gROOT.cd()
     
     ofile = open('%s/%s_%s.txt' % (folder, saveName, fitCode), 'w')
     
     for line in storage:
-        line =  "x range: %3i-%3i  vert: %8i+-%8i  depth: %10f+-%10f   accurate: %7s" % (line[0], line[1], line[2], line[3], line[4], line[5], line[6])
+        line =  "x range: %3i-%3i  vert: %8i+-%8i  depth: %10f+-%10f   ChiSq: %6f   accurate: %7s" % (line[0], line[1], line[2], line[3], line[4], line[5], line[6], line[7])
         print line
         ofile.write("%s\n" % line)
     
