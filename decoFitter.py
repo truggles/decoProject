@@ -111,6 +111,7 @@ for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
             fitResult.SetLineColor(ROOT.kRed)
             #hist.SetMaximum( fitVert * 1.2 )
             hist.SetTitle('%s Fit x range: %i-%i' % (titleName, mini, maxi))
+            hist.GetXaxis().SetRange( 2, 11 )
             c1.SaveAs('%s/%s_%s_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
             #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
             c1.Close()
