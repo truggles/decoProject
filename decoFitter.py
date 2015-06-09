@@ -18,8 +18,8 @@ filename = args.file[0]
 #fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
 fitCode = 'EMRIS'
-isotropic = False
-#isotropic = True
+#isotropic = False
+isotropic = True
 
 #for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
 ifile = ROOT.TFile("%s" % filename, "r")
@@ -52,7 +52,7 @@ xMin = []
 for i in range(1, 4):
     xMin.append(i * binWidth)
 xMax = []
-for i in range(4, 12):
+for i in range(4, 11):
     xMax.append(i * binWidth)
 xMin = [binWidth]
 #xMax = [90, 100]
@@ -105,8 +105,11 @@ for mini in xMin:
         f2.SetParameter( 0, fitScale )
         f2.SetParameter( 1, fitDepth )
 
-        c1 = ROOT.TCanvas("c1","title",400,400)
-        c1.cd ()
+        c1 = ROOT.TCanvas("c1","title",800,800)
+        c1.cd()
+        hist.SetBinContent(0, 0)
+        hist.SetBinContent(11, 0)
+        print "Int: %i" % hist.Integral()
         hist.Draw('hist e1')
         f2.Draw('same')
         fitResult.Draw('same')
@@ -114,12 +117,21 @@ for mini in xMin:
 
         chiSq = hist.Chisquare( funNew )
 
+        ''' Build Legend '''
+        hist.SetStats(0)
+        legend = ROOT.TPaveStats(Max - 4*binWidth, hist.GetMaximum()*0.98, Max, hist.GetMaximum()*1.18 )
+        legend.AddText( "Number of Tracks: %i" % hist.Integral() )
+        legend.AddText( "Chi Square Value: %f" % chiSq )
+        legend.Draw()
+
+
         #hist.SetMaximum( fitScale * 1.2 )
         sufix = "Sea Level Muon Distribution"
         if isotropic: sufix = "Isotropic Distribution"
         hist.SetTitle('%s %s Fit' % (titleName, sufix))
-        hist.GetXaxis().SetRange( 2, 11 )
+        hist.GetXaxis().SetRange( 2, 10 )
         c1.SaveAs('%s/%s_%s_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
+        c1.SaveAs('%s/%s_%s_%i-%i.pdf' % (folder, saveName, fitCode, mini, maxi) )
         #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
         ''' store results for a nice print out summary '''
         storage.append( [mini, maxi, fitScale, fitScaleError, fitDepth, fitDepthError, chiSq, accurate] )
