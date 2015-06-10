@@ -6,3 +6,6 @@ fits/*
 fits*/*.png
 untracked_files
 forJustin/
+*.pdf
+.DS_Store
+fitsArch
