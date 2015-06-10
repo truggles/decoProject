@@ -1,6 +1,6 @@
-x range:   7- 28  scale:     2853+-     314  depth: -10.423000+-  1.622000   ChiSq: 1237.539758   accurate:    True
-x range:   7- 35  scale:     2854+-     315  depth: -10.377000+-  1.432000   ChiSq: 4.371555   accurate:    True
-x range:   7- 42  scale:     2861+-     321  depth: -10.198000+-  1.323000   ChiSq: 4.082280   accurate:    True
+x range:   7- 28  scale:     2853+-     314  depth:  10.423000+-  1.622000   ChiSq: 1237.539758   accurate:    True
+x range:   7- 35  scale:     2854+-     315  depth:  10.377000+-  1.432000   ChiSq: 4.371555   accurate:    True
+x range:   7- 42  scale:     2861+-     321  depth:  10.198000+-  1.323000   ChiSq: 4.082280   accurate:    True
 x range:   7- 49  scale:     2915+-     358  depth:   9.303000+-  1.201000   ChiSq: 3.642867   accurate:    True
 x range:   7- 56  scale:     2911+-     355  depth:   9.355000+-  1.181000   ChiSq: 3.624969   accurate:    True
 x range:   7- 63  scale:     2911+-     355  depth:   9.355000+-  1.181000   ChiSq: 3.624969   accurate:    True

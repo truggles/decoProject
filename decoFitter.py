@@ -18,8 +18,8 @@ filename = args.file[0]
 #fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
 fitCode = 'EMRIS'
-#isotropic = False
-isotropic = True
+isotropic = False
+#isotropic = True
 
 #for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
 ifile = ROOT.TFile("%s" % filename, "r")
