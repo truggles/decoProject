@@ -119,9 +119,14 @@ for mini in xMin:
 
         ''' Build Legend '''
         hist.SetStats(0)
-        legend = ROOT.TPaveStats(Max - 4*binWidth, hist.GetMaximum()*0.98, Max, hist.GetMaximum()*1.18 )
+        legend = ROOT.TPaveStats(Max - 5*binWidth, hist.GetMaximum()*0.88, Max, hist.GetMaximum()*1.14 )
+        chiSq_ = str( round( chiSq, 3 ) )
+        depth_ = str( abs( round(fitDepth, 2) ) )
+        uncert_ = str( abs( round(fitDepthError, 2) ) )
+        legend.AddText( "Distribution Values" )
         legend.AddText( "Number of Tracks: %i" % hist.Integral() )
-        legend.AddText( "Chi Square Value: %f" % chiSq )
+        legend.AddText( "Depletion Depth (pixel lengths): %s #pm %s" % (depth_, uncert_) )
+        legend.AddText( "Chi Square Value: %s" % chiSq_ )
         legend.Draw()
 
 
@@ -134,7 +139,7 @@ for mini in xMin:
         c1.SaveAs('%s/%s_%s_%i-%i.pdf' % (folder, saveName, fitCode, mini, maxi) )
         #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
         ''' store results for a nice print out summary '''
-        storage.append( [mini, maxi, fitScale, fitScaleError, fitDepth, fitDepthError, chiSq, accurate] )
+        storage.append( [mini, maxi, fitScale, fitScaleError, abs(fitDepth), fitDepthError, chiSq, accurate] )
         print "\n"
         c1.Close()
         gROOT.cd()
