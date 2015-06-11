@@ -18,8 +18,8 @@ filename = args.file[0]
 #fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
 fitCode = 'EMRIS'
-#isotropic = True
-isotropic = False
+isotropic = True
+#isotropic = False
 
 #for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
 ifile = ROOT.TFile("%s" % filename, "r")
@@ -34,29 +34,31 @@ if 'HTC' in filename:
     saveName = "HTC_Wildfire_S"
     titleName = "HTC Wildfire S"
     abrev = 'HTC'
-    nEvents = 256*10 # events * 10 pixels per bin
+    nEventCount = 256 # events * 10 pixels per bin
 if 'SPH' in filename:
     histName = "Samsung Galaxy S2length"
     saveName = "Samsung_Galaxy_S2"
     titleName = "Samsung Galaxy S2"
     abrev = 'SPH'
-    nEvents = 131*7 # events * 7 pixels per bin
+    nEventCount = 131 # events * 7 pixels per bin
 hist = ifile.Get(histName)
 
-binWidth = int( hist.GetBinWidth(1) )
-print "Bin width: %i" % binWidth
+binWidth = hist.GetBinWidth(1)
+print "Bin width: %f" % binWidth
 nBins = hist.GetXaxis().GetNbins()
 print "Number of bins: %i" % nBins
 Max = nBins * binWidth
 print "X range: 0 - %i" % Max
+nEvents = nEventCount * binWidth # events * bin width to get area of curve
+print "Integral: %i" % nEvents
 
-xMin = []
-for i in range(1, 4):
-    xMin.append(i * binWidth)
+if nBins == 10: adjust = 1
+if nBins == 20: adjust = 2
+
 xMax = []
 for i in range(4, 11):
-    xMax.append(i * binWidth)
-xMin = [binWidth]
+    xMax.append(i * binWidth * adjust)
+xMin = [binWidth * adjust]
 #xMax = [90, 100]
 print xMin
 print xMax
@@ -68,7 +70,7 @@ folder = './fits%s%s' % (abrev, num)
 if isotropic: folder = folder + 'iso'
 for mini in xMin:
     for maxi in xMax:
-        print "x range: %i-%i" % (mini, maxi)
+        print "x range: %f-%f" % (mini, maxi)
         if isotropic:
             norm = '( (2*%s)/([1]*[1]) )*( ( (%s*%s+[1]*[1])*(%s*%s+[1]*[1]) )/(%s*%s-%s*%s) )' % (nEvents,mini,mini,maxi,maxi,maxi,maxi,mini,mini)  
             fit_function = norm+'*(x*[1]*[1])/( (x*x+[1]*[1])*(x*x+[1]*[1]) )'
@@ -114,7 +116,9 @@ for mini in xMin:
         c1 = ROOT.TCanvas("c1","title",800,800)
         c1.cd()
         hist.SetBinContent(0, 0)
-        hist.SetBinContent(11, 0)
+        hist.SetBinContent(1, 0)
+        if adjust == 2: hist.SetBinContent(2, 0)
+        hist.SetBinContent(nBins+1, 0)
         print "Int: %i" % hist.Integral()
         hist.Draw('hist e1')
         f2.Draw('same')
@@ -126,7 +130,7 @@ for mini in xMin:
         ''' Build Legend '''
         #gStyle.SetOptFit(1) # stats box (pcev) p=probability, c=chi_sq/dof, e=errors, v=name/vals parameters 
         hist.SetStats(0)
-        legend = ROOT.TPaveStats(Max - 5*binWidth, hist.GetMaximum()*0.88, Max, hist.GetMaximum()*1.14 )
+        legend = ROOT.TPaveStats(Max - 5*binWidth*adjust, hist.GetMaximum()*0.88, Max, hist.GetMaximum()*1.14 )
         chiSq_ = str( round( chiSq, 3 ) )
         depth_ = str( abs( round(fitDepth, 2) ) )
         uncert_ = str( abs( round(fitDepthError, 2) ) )
@@ -141,7 +145,7 @@ for mini in xMin:
         sufix = "Sea Level Muon Distribution"
         if isotropic: sufix = "Isotropic Distribution"
         hist.SetTitle('%s %s Fit' % (titleName, sufix))
-        hist.GetXaxis().SetRange( 2, 10 )
+        hist.GetXaxis().SetRange( 1+adjust, nBins )
         c1.SaveAs('%s/%s_%s_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
         c1.SaveAs('%s/%s_%s_%i-%i.pdf' % (folder, saveName, fitCode, mini, maxi) )
         #c1.SaveAs('%s/%s_%s_tall_%i-%i.png' % (folder, saveName, fitCode, mini, maxi) )
