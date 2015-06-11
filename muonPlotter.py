@@ -36,7 +36,7 @@ def getRecord(ifile):
   for line in ifile:
       if 'majA' not in line: continue
       info = line.split(' ')
-      event = str( info[1] )
+      event = str( info[0] )
       if event == previous:
           count += 1
       else:
@@ -50,13 +50,13 @@ for key in mapper.keys():
   print key
 
   if 'HTC' in key:
-    nBins = 10
+    nBins = 20
     nMax = 100
     lenMax = 30
     fitMin = 4
     namer = "HTC Wildfire S"
   if 'SPH' in key:
-    nBins = 10
+    nBins = 20
     nMax = 70
     lenMax = 30
     fitMin = 2
@@ -85,12 +85,14 @@ for key in mapper.keys():
     for linex in ifile:
         if 'majA' not in linex: continue
         info = linex.split(' ')
-        event = str( info[1] )
-        ecc = float( info[17] )
-        l2 = float( info[23] )
-        area = float( info[19] )
-        majA = float( info[11] )
-        minA = float( info[13] )
+        fst = str( info[0] )[0]
+        event = str( info[0] )
+        ecc = float( info[12] )
+        l1 = float( info[18] )
+        l2 = float( info[21] )
+        area = float( info[15] )
+        majA = float( info[3] )
+        minA = float( info[6] )
         #print "majA: %f minA: %f area: %f" % (majA, minA, area)
         #ofile.write('%10s %10f %10f %10f' % (info[0], ecc, l1, l2) )
         len_ = l2
@@ -166,10 +168,8 @@ for key in mapper.keys():
     lHist99.SaveAs('root_%s%s.root' % (key, name))
   
     ''' Do some fitting to find the depth of the depletion region '''
-    ''' I previously forgot the dl / dTheta, that is the new 1/(1+x^2) component '''
     #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
-    #funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
-    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )*(1/([1]*(1+((x*x)/([1]*[1])))))', nMax/nBins, nMax)
+    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
 #$    funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
     f1 = gROOT.GetFunction('funx')
     f1.SetParName( 0, "vert count" )
