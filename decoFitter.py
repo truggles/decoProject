@@ -18,8 +18,8 @@ filename = args.file[0]
 #fitCode = 'EMRISWW'
 #fitCode = 'EMRISW'
 fitCode = 'EMRIS'
-isotropic = True
-#isotropic = False
+#isotropic = True
+isotropic = False
 
 #for fitCode in ['EMRISWW', 'EMRISW', 'EMRIS']:
 ifile = ROOT.TFile("%s" % filename, "r")
@@ -34,13 +34,17 @@ if 'HTC' in filename:
     saveName = "HTC_Wildfire_S"
     titleName = "HTC Wildfire S"
     abrev = 'HTC'
-    nEventCount = 256 # events * 10 pixels per bin
+    #nEventCount = 256 # ecc > 0.99
+    nEventCount = 521 # no Ecc Cut
+    nEventCount = 265 # ecc < 0.99
 if 'SPH' in filename:
     histName = "Samsung Galaxy S2length"
     saveName = "Samsung_Galaxy_S2"
     titleName = "Samsung Galaxy S2"
     abrev = 'SPH'
-    nEventCount = 131 # events * 7 pixels per bin
+    #nEventCount = 131 # ecc < 0.99
+    nEventCount = 169 # no Ecc Cut
+    nEventCount = 38 # ecc < 0.99
 hist = ifile.Get(histName)
 
 binWidth = hist.GetBinWidth(1)
@@ -167,5 +171,5 @@ for line in storage:
 ofile.close()
 gROOT.cd()
 #gROOT.cd()
-
+print "\n\n############### IF RESULTS LOOK SCALED WRONG CHECK nEvents FOR YOUR SAMPLE #################\n\n"
 
