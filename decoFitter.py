@@ -98,6 +98,8 @@ for mini in xMin:
         fitDepth = round(fitResult.GetParameter( 1 ), 3)
         fitScaleError = round(fitResult.GetParError( 0 ), 0)
         fitDepthError = round(fitResult.GetParError( 1 ), 3)
+        chiSq_ = round(fitResult.GetChisquare(), 3)
+        print "Fit function Chi Sq = %f" % chiSq_
         
         #$  fitSteep = fitResult.GetParameter( 2 )
         #$  fitOffset = fitResult.GetParameter( 3 )
