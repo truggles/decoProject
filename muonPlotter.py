@@ -40,9 +40,10 @@ def getRecord(ifile):
       if event == previous:
           count += 1
       else:
-          record[ event ] = count
+          # buggy line was previously here
           count = 1
           previous = event
+      record[ event ] = count # previously on line 43
   return record
           
 for key in mapper.keys():
@@ -50,13 +51,13 @@ for key in mapper.keys():
   print key
 
   if 'HTC' in key:
-    nBins = 20
+    nBins = 10
     nMax = 100
     lenMax = 30
     fitMin = 4
     namer = "HTC Wildfire S"
   if 'SPH' in key:
-    nBins = 20
+    nBins = 10
     nMax = 70
     lenMax = 30
     fitMin = 2
@@ -76,11 +77,13 @@ for key in mapper.keys():
     AreaVsEcc2 = ROOT.TH2I('%sareaVsEcc2' % namer, 'Eccentricity vs. Area', 100/2, 0.0, 100, 100/2, 0.5, 1)
 
     print name
+    print key
 #    name = '%s%s' % (key, i)
     ifile = open('%s_log%s.out' % (key, name), 'r')
     record = getRecord( ifile )
-    ifile.close()    
-
+    ifile.close()   
+    
+    num_events = 0
     ifile = open('%s_log%s.out' % (key, name), 'r')
     for linex in ifile:
         if 'majA' not in linex: continue
@@ -93,12 +96,13 @@ for key in mapper.keys():
         area = float( info[15] )
         majA = float( info[3] )
         minA = float( info[6] )
+        num_blobs = float( info[23] )
         #print "majA: %f minA: %f area: %f" % (majA, minA, area)
         #ofile.write('%10s %10f %10f %10f' % (info[0], ecc, l1, l2) )
         len_ = l2
 
         # Skip the event line if there are more than XXX blobs that were IDed in that image
-        if record[ event ] > 1: continue
+        if record[ event ] > 1 or num_blobs > 1: continue
         #if area > 10 and name == '405': continue
         #if area > 5 and name == '8025': continue
 
@@ -117,6 +121,7 @@ for key in mapper.keys():
         #cdf.Fill( len_ )
         #lHistAll.Fill( len_ )
         if float( ecc ) > 0.99 or passing:
+            num_events+=1
             lHist99.Fill( len_ )
         #if float( ecc ) > 0.95 or passing:
         #    lHist95.Fill( len_ )
@@ -166,26 +171,27 @@ for key in mapper.keys():
     lHist99.Draw('hist e1')
     c2.SaveAs('pngs/hist_%s%s.png' % (key, name))
     lHist99.SaveAs('root_%s%s.root' % (key, name))
-  
+    print('number of events:')
+    print(num_events)
     ''' Do some fitting to find the depth of the depletion region '''
     #funx = ROOT.TF1( 'funx', '[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', (nMax/nBins)*fitMin, nMax)
-    funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
+    #funx = ROOT.TF1( 'funx', '[0]*cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', nMax/nBins, nMax)
 #$    funx = ROOT.TF1( 'funx', '(1/(1+TMath::Exp([2]*(x-[3]))))*[0] * cos( TMath::ATan( x / [1]) )*cos( TMath::ATan( x / [1]) )', 0, nMax)
-    f1 = gROOT.GetFunction('funx')
-    f1.SetParName( 0, "vert count" )
-    f1.SetParName( 1, "depth" )
-    f1.SetParameter( 0, 999 )
-    f1.SetParameter( 1, 999 )
+    #f1 = gROOT.GetFunction('funx')
+    #f1.SetParName( 0, "vert count" )
+    #f1.SetParName( 1, "depth" )
+    #f1.SetParameter( 0, 500 )
+    #f1.SetParameter( 1, 10 )
 #$    f1.SetParName( 2, "steepness" )
 #$    f1.SetParameter( 2, -1 )
 #$    f1.SetParName( 3, "x offset" )
 #$    f1.SetParameter( 3, 3 )
   
-    lHist99.Fit('funx', 'EMRIW')
-    fitResult = lHist99.GetFunction("funx")
-    lHist99.SetAxisRange( 0, nMax )
-    fitResult.Draw('same')
-    c2.SaveAs('pngs/final%s%s_Fit.png' % (key, name) )
+    #lHist99.Fit('funx', 'EMRIW')
+    #fitResult = lHist99.GetFunction("funx")
+    #lHist99.SetAxisRange( 0, nMax )
+    #fitResult.Draw('same')
+    #c2.SaveAs('pngs/final%s%s_Fit.png' % (key, name) )
   
   #  # Plot others varied by for an eye comparison
   #  # Adjust the depth fit to show errors
