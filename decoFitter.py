@@ -35,16 +35,14 @@ if 'HTC' in filename:
     titleName = "HTC Wildfire S"
     abrev = 'HTC'
     #nEventCount = 256 # ecc > 0.99
-    nEventCount = 521 # no Ecc Cut
-    nEventCount = 265 # ecc < 0.99
+    nEventCount = 176 # BUG FIXED BY MATT
 if 'SPH' in filename:
     histName = "Samsung Galaxy S2length"
     saveName = "Samsung_Galaxy_S2"
     titleName = "Samsung Galaxy S2"
     abrev = 'SPH'
-    #nEventCount = 131 # ecc < 0.99
-    nEventCount = 169 # no Ecc Cut
-    nEventCount = 38 # ecc < 0.99
+    #nEventCount = 131 # ecc > 0.99
+    nEventCount = 42 # BUG FIXED BY MATT
 hist = ifile.Get(histName)
 
 binWidth = hist.GetBinWidth(1)
